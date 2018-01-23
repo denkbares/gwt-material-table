@@ -19,6 +19,11 @@
  */
 package gwt.material.design.client.ui.table;
 
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -33,11 +38,14 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.view.client.Range;
+import gwt.material.design.client.base.MaterialWidget;
 import gwt.material.design.client.base.constants.TableCssName;
 import gwt.material.design.client.data.DataSource;
+import gwt.material.design.client.data.DataView;
 import gwt.material.design.client.data.Renderer;
 import gwt.material.design.client.data.SelectionType;
 import gwt.material.design.client.data.SortDir;
+import gwt.material.design.client.data.StandardDataView;
 import gwt.material.design.client.data.component.CategoryComponent;
 import gwt.material.design.client.data.component.ComponentFactory;
 import gwt.material.design.client.data.component.RowComponent;
@@ -82,15 +90,7 @@ import gwt.material.design.client.data.events.SetupHandler;
 import gwt.material.design.client.data.factory.RowComponentFactory;
 import gwt.material.design.client.events.DefaultHandlerRegistry;
 import gwt.material.design.client.events.HandlerRegistry;
-import gwt.material.design.client.base.MaterialWidget;
-import gwt.material.design.client.data.DataView;
-import gwt.material.design.client.data.StandardDataView;
 import gwt.material.design.client.ui.table.cell.Column;
-
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An abstract data table implementation that can be attached to the DOM.
@@ -170,7 +170,7 @@ public abstract class AbstractDataTable<T> extends MaterialWidget implements Dat
         this.scaffolding = scaffolding;
 
         view.setDisplay(this);
-        setStyleName("table-container");
+        setStyleName("gwt-material-table-container");
 
         handlerRegistry = new DefaultHandlerRegistry(this);
 

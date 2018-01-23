@@ -9,7 +9,7 @@
     <version>2.0</version>
   </parent>
 
-  <artifactId>gwt-material-table</artifactId>
+  <artifactId>gwt-material-table-des</artifactId>
   <version>2.0</version>
 
   <name>Gwt Material Table</name>
