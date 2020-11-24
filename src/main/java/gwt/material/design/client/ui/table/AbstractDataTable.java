@@ -19,12 +19,22 @@
  */
 package gwt.material.design.client.ui.table;
 
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.*;
+import com.google.gwt.dom.client.BrowserEvents;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
@@ -35,20 +45,60 @@ import gwt.material.design.client.base.MaterialWidget;
 import gwt.material.design.client.base.constants.TableCssName;
 import gwt.material.design.client.base.density.Density;
 import gwt.material.design.client.base.mixin.CssNameMixin;
-import gwt.material.design.client.data.*;
+import gwt.material.design.client.data.Categories;
+import gwt.material.design.client.data.DataSource;
+import gwt.material.design.client.data.DataView;
+import gwt.material.design.client.data.Renderer;
+import gwt.material.design.client.data.SelectionType;
+import gwt.material.design.client.data.SortDir;
+import gwt.material.design.client.data.StandardDataView;
 import gwt.material.design.client.data.component.CategoryComponent;
 import gwt.material.design.client.data.component.ComponentFactory;
 import gwt.material.design.client.data.component.RowComponent;
-import gwt.material.design.client.data.events.*;
+import gwt.material.design.client.data.events.CategoryClosedEvent;
+import gwt.material.design.client.data.events.CategoryClosedHandler;
+import gwt.material.design.client.data.events.CategoryOpenedEvent;
+import gwt.material.design.client.data.events.CategoryOpenedHandler;
+import gwt.material.design.client.data.events.ColumnSortEvent;
+import gwt.material.design.client.data.events.ColumnSortHandler;
+import gwt.material.design.client.data.events.ComponentsRenderedEvent;
+import gwt.material.design.client.data.events.ComponentsRenderedHandler;
+import gwt.material.design.client.data.events.DestroyEvent;
+import gwt.material.design.client.data.events.DestroyHandler;
+import gwt.material.design.client.data.events.InsertColumnEvent;
+import gwt.material.design.client.data.events.InsertColumnHandler;
+import gwt.material.design.client.data.events.RemoveColumnEvent;
+import gwt.material.design.client.data.events.RemoveColumnHandler;
+import gwt.material.design.client.data.events.RenderedEvent;
+import gwt.material.design.client.data.events.RenderedHandler;
+import gwt.material.design.client.data.events.RowCollapsedEvent;
+import gwt.material.design.client.data.events.RowCollapsedHandler;
+import gwt.material.design.client.data.events.RowCollapsingEvent;
+import gwt.material.design.client.data.events.RowCollapsingHandler;
+import gwt.material.design.client.data.events.RowContextMenuEvent;
+import gwt.material.design.client.data.events.RowContextMenuHandler;
+import gwt.material.design.client.data.events.RowDoubleClickEvent;
+import gwt.material.design.client.data.events.RowDoubleClickHandler;
+import gwt.material.design.client.data.events.RowExpandedEvent;
+import gwt.material.design.client.data.events.RowExpandedHandler;
+import gwt.material.design.client.data.events.RowExpandingEvent;
+import gwt.material.design.client.data.events.RowExpandingHandler;
+import gwt.material.design.client.data.events.RowLongPressEvent;
+import gwt.material.design.client.data.events.RowLongPressHandler;
+import gwt.material.design.client.data.events.RowSelectEvent;
+import gwt.material.design.client.data.events.RowSelectHandler;
+import gwt.material.design.client.data.events.RowShortPressEvent;
+import gwt.material.design.client.data.events.RowShortPressHandler;
+import gwt.material.design.client.data.events.RowsVisibleEvent;
+import gwt.material.design.client.data.events.RowsVisibleHandler;
+import gwt.material.design.client.data.events.SelectAllEvent;
+import gwt.material.design.client.data.events.SelectAllHandler;
+import gwt.material.design.client.data.events.SetupEvent;
+import gwt.material.design.client.data.events.SetupHandler;
 import gwt.material.design.client.data.factory.RowComponentFactory;
 import gwt.material.design.client.events.DefaultHandlerRegistry;
 import gwt.material.design.client.events.HandlerRegistry;
 import gwt.material.design.client.ui.table.cell.Column;
-
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An abstract data table implementation that can be attached to the DOM.
@@ -134,7 +184,7 @@ public abstract class AbstractDataTable<T> extends MaterialWidget implements Dat
         this.scaffolding = scaffolding;
 
         view.setDisplay(this);
-        setStyleName("table-container");
+        setStyleName("gwt-material-table-container");
 
         handlerRegistry = new DefaultHandlerRegistry(this);
 
