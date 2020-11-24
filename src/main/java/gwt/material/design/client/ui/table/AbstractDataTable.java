@@ -170,7 +170,6 @@ public abstract class AbstractDataTable<T> extends MaterialWidget implements Dat
         this.scaffolding = scaffolding;
 
         view.setDisplay(this);
-        // longer css class name to allow more specific styling
         setStyleName("gwt-material-table-container");
 
         handlerRegistry = new DefaultHandlerRegistry(this);
